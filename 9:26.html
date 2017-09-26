@@ -1,0 +1,50 @@
+<html>
+<head>
+	<script src="https://d3js.org/d3.v3.min.js"> </script>
+</head>
+<body>
+
+<script>
+url = " https://ntu-csx-d3js.github.io/r05630002/0926.csv"
+
+d3.csv(url, function(data){
+
+	console.log(data);
+
+	var w = 600; //定義寬
+	var h = 250; //定義高
+
+	var m = 10; //定義邊界
+
+	var l = d3.max(data, function(d, i){return i;});
+	l += l
+	//建立x軸的尺度
+	var xScale = d3.scale.ordinal().domain(d3.range(data.length)).rangeRoundBands([0, w],0.05);
+	//建立y軸的尺度	
+	var yScale = d3.scale.linear().domain([0,l]).range([0,h]);
+
+	var svg = d3.select("body").append('svg').attr('width' , w).attr('height', h);
+	svg.selectAll("rect")
+	.data(data)
+	.enter()
+	.append("rect")
+	.attr("x" , function(d,i){
+		return xScale(i);
+	})
+	.attr("width" , xScale.rangeBand())
+	.attr("height" , function(d){ 
+		return yScale(d);
+	})
+	.attr("fill" , function(d){
+	return"reg(0,0,"+(d*10)+")";
+	})
+	.on("click",function(d){
+		console.log(d);
+	});
+
+});
+
+</script>
+
+</body>
+</html>
