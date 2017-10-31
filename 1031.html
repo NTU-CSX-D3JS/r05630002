@@ -1,0 +1,32 @@
+<html>
+<head>
+	<script src="http://d3js.org/d3/v4/js"></script>
+</head>
+<body>
+	
+	<script type="text/javascript">
+	 var url= "https://ntu-csx-d3js.github.io/r05630002/student.csv";
+d3.csv(url, funtion(data){
+	console.log(data);
+
+	var w =500;
+	var h =300;	
+
+	var m =10;
+
+var xmin=d3.min(data,function(x){return x.Year;});
+var xmax=d3.max(data,function(x){return x.Year;});
+var ymin=d3.min(data,function(x){return x.BC;});
+var ymax=d3.max(data,function(x){return x.BC;});
+
+var xScale=d3.scaleLinear().domain([xmin,xmax]).range([0,w];);
+var yScale=d3.scaleLinear().domain([ymin,ymax]).range([h,0];);
+
+varlineBC=d3.line(.x(function(d){return xScale(d.Year);}).y(function(d){return yScale(d.BC);});
+var svg=d3.select('body').append('svg').attr('width',w).attr('height',h);
+var linechart=svg.append("path").attr("class,line").attr("stroke","red").attr("stroke-width",3).attr("fill","none").attr("d",function(d){return lineBC(data);});
+});
+</script>
+
+</body>
+</html>
