@@ -71,12 +71,13 @@
 			   .attr("fill", "yellow");
 			   
 			   //Axis
-				var yAxis = d3.axisLeft(yScale);
-				var xAxis = d3.axisBottom(xScale);
+				var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+				var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(5);
 				var XaxisAppend = svg.append("g").attr("class", "axis").attr("transform", "translate(0, "+(h-n)+")").call(xAxis);
 				var YaxisAppend = svg.append("g").attr("class", "axis").attr("transform", "translate("+n+", 0)").call(yAxis);
 			   
-</script>
+	
+	</script>
 
 </body>
 </html>
