@@ -15,8 +15,7 @@
 							5, 9, 13, ];
 			var xScale = d3.scale.ordinal()
 							.domain(d3.range(dataset.length))
-							.rangeRoundBands([50, w], 0.02
-								);
+							.rangeRoundBands([50, w], 0.02);
 			var yScale = d3.scale.linear()
 							.domain([0, d3.max(dataset)])
 							.range([0, h]);
