@@ -11,9 +11,9 @@ var h = 400;
 var r = h/2;
 var color = d3.scale.category20b();
 
-var data = [{"label":"Category A", "value":10}, 
-                {"label":"Category B", "value":22}, 
-                {"label":"Category C", "value":25}
+var data = [{"label":"classroom A", "value":10}, 
+                {"label":"classroom B", "value":22}, 
+                {"label":"classroom C", "value":25}
                 ];
 
 
@@ -27,7 +27,7 @@ var arc = d3.svg.arc().outerRadius(r);
 var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
 arcs.append("svg:path")
     .attr("fill", function(d,i)
-        {return;color(i) })
+        {return color(i); })
     .attr("d", function (d) {
         // log the result of the arc generator to show how cool it is :)
         console.log(arc(d));
