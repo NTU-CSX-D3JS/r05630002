@@ -3,18 +3,39 @@
     <script src="https://d3js.org/d3.v3.min.js"></script>
 </head>
 <body>
-<div id="chart">
+    <svg height="100" width="400">   
+<g>
+ <defs>
+    <filter id="f1" x="0" y="0">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="70" />
+    </filter>
+  </defs>
+  <rect width="400" height="75" stroke="orange" stroke-width="10"
+  fill="gold" filter="url(#f1)" />
+<text x="50" y="50" fill="brown">我拔智齒很痛，好想吃這些東西ＱＱ</text>
+ </svg> 
+
+<div id="chart"> <div id="chart2.0">
 <script>
-
-var w = 400;
-var h = 400;
+ 
+var w = 1000;
+var h = 800;
 var r = h/2;
-var color = d3.scale.category20b();
+var m = 250; //定義邊界
+var color = d3.scale.category20c();
 
-var data = [{"label":"classroom A", "value":10}, 
-                {"label":"classroom B", "value":22}, 
-                {"label":"classroom C", "value":25}
-                ];
+var data = [{"label":"炸雞","value":100}, 
+            {"label":"金黃薯餅","value":75}, 
+            {"label":"抹茶冰淇凌","value":115},
+            {"label":"養樂多", "value":50},
+            {"label":"鹹酥雞", "value":180},
+            {"label":"水蜜桃", "value":80},
+            {"label":"甘蔗汁", "value":300},
+            {"label":"丹丹漢堡", "value":155},
+            {"label":"麻辣鍋", "value":165},
+            {"label":"爆米花", "value":120},
+            {"label":"油飯", "value":100},
+            {"label":"烤白菜", "value":105}];
 
 
 var vis = d3.select('#chart').append("svg:svg").data([data]).attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
@@ -36,10 +57,12 @@ arcs.append("svg:path")
 
 // add the text
 arcs.append("svg:text").attr("transform", function(d){
-            d.innerRadius = 0;
+            d.innerRadius = 120;
             d.outerRadius = r;
     return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
     return data[i].label;}
+        
+
         );
 
     </script>
