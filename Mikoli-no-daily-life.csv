@@ -1,9 +1,9 @@
 label,time
-sleeping,7.0
-commuting,2.0
-breakfirst&working,4.0
-free-time,3.0
-lunch,2.0
-dinner&working,1.5
-part-time,4.0
-shower,0.5
+sleeping,70
+commuting,20
+breakfirst&working,40
+free-time,30
+lunch,20
+dinner&working,15
+part-time,40
+shower,5
