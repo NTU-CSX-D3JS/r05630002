@@ -14,3 +14,4 @@ final (practice)
 
 https://ntu-csx-d3js.github.io/r05630002/1231.html
 https://ntu-csx-d3js.github.io/r05630002/scooter.html
+https://ntu-csx-d3js.github.io/r05630002/taiwanpower.html
