@@ -9,3 +9,5 @@ hw2 https://ntu-csx-d3js.github.io/r05630002/11.11.html
 hw3 https://ntu-csx-d3js.github.io/r05630002/piechart.html
 
 google map https://ntu-csx-d3js.github.io/r05630002/1128index.html
+
+final (practice)
