@@ -54,7 +54,7 @@
 			var r = h/3;
 			var m = 300; //定義邊界
 			var color = d3.scale.category20c();
-			var vis = d3.select('#pie').append("svg:svg").data([data]).attr("width", w).attr("height", h-80).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+			var vis = d3.select('#pie').append("svg:svg").data([data]).attr("width", w).attr("height", h-150).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
 			console.log(vis);
 			var pie = d3.layout.pie().sort(null).value(function(d){return parseInt(d.power);});
 			// declare an arc generator function
