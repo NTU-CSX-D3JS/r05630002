@@ -36,7 +36,7 @@
   </defs>
   <rect width="500" height="75" stroke="orange" stroke-width="10"
   fill="white" filter="url(#f1)" />
-<text x="50" y="50" fill="brown">台灣各縣市用電比</text>
+<text x="50" y="50" fill="brown">台灣各縣市電動機車比例</text>
  
  </svg> 
 </head>
@@ -52,7 +52,7 @@
 			var w = 850;
 			var h = 850;
 			var r = h/3;
-			var m = 250; //定義邊界
+			var m = 300; //定義邊界
 			var color = d3.scale.category20c();
 			var vis = d3.select('#pie').append("svg:svg").data([data]).attr("width", w).attr("height", h-80).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
 			console.log(vis);
