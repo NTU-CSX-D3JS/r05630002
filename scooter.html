@@ -10,7 +10,7 @@
 
 		* {
 				font-family: 微軟正黑體, candara;
-				font-size: 14px;
+				font-size: 12px;
 				font-weight: 800;
 			}
 			
@@ -27,16 +27,16 @@
 
 
 	</style>
-<svg height="150" width="400">   
+<svg height="200" width="500">   
 <g>
  <defs>
     <filter id="f1" x="0" y="0">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="70" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="90" />
     </filter>
   </defs>
-  <rect width="500" height="75" stroke="orange" stroke-width="10"
+  <rect width="600" height="75" stroke="orange" stroke-width="30"
   fill="white" filter="url(#f1)" />
-<text x="50" y="50" fill="brown">台灣各縣市汽油（重型＋輕型）機車比例</text>
+<text x="50" y="50" fill="brown">台灣各縣市汽油機車（重型＋輕型）比例</text>
  </svg> 
 </head>
 <body>
@@ -48,16 +48,16 @@
 		
 		d3.csv(url, function(data){
 			console.log(data);
-			var w = 850;
-			var h = 850;
+			var w = 800;
+			var h = 800;
 			var r = h/3;
 			var m = 300; //定義邊界
 			var color = d3.scale.category20b();
-			var vis = d3.select('#pie').append("svg:svg").data([data]).attr("width", w).attr("height", h-80).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+			var vis = d3.select('#pie').append("svg:svg").data([data]).attr("width", w).attr("height", h-150).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
 			console.log(vis);
 			var pie = d3.layout.pie().sort(null).value(function(d){return parseInt(d.gasoline);});
 			// declare an arc generator function
-			var arc = d3.svg.arc().outerRadius(r).innerRadius(50);
+			var arc = d3.svg.arc().outerRadius(r).innerRadius(80);
 			// select paths, use arc generator to draw
 			var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
 			console.log(arcs);
@@ -75,7 +75,7 @@
 
 			// add the text
 			arcs.append("svg:text").attr("transform", function(d){
-						d.innerRadius = 5;
+						d.innerRadius = 85;
 						d.outerRadius = r;
 			    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
 			    return data[i].label;}
