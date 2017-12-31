@@ -1,0 +1,92 @@
+<html >
+<head>
+	<script src="https://d3js.org/d3.v3.js"></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			width: 100%;
+		}
+
+		* {
+				font-family: 微軟正黑體, candara;
+				font-size: 14px;
+				font-weight: 800;
+			}
+			
+		#pie {
+			height: 100%;
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		body{
+			background-color: #d9d9d9 ;
+		}
+
+
+	</style>
+<svg height="150" width="400">   
+<g>
+ <defs>
+    <filter id="f1" x="0" y="0">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="70" />
+    </filter>
+  </defs>
+  <rect width="500" height="75" stroke="orange" stroke-width="10"
+  fill="white" filter="url(#f1)" />
+<text x="50" y="50" fill="brown">台灣各縣市用電比</text>
+ 
+ </svg> 
+</head>
+<body>
+	
+	<div id="pie"></div>
+
+	<script type="text/javascript">
+		var url = "https://ntu-csx-d3js.github.io/r05630002/power.csv";
+		
+		d3.csv(url, function(data){
+			console.log(data);
+			var w = 850;
+			var h = 850;
+			var r = h/3;
+			var m = 250; //定義邊界
+			var color = d3.scale.category20c();
+			var vis = d3.select('#pie').append("svg:svg").data([data]).attr("width", w).attr("height", h-80).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+			console.log(vis);
+			var pie = d3.layout.pie().sort(null).value(function(d){return parseInt(d.power);});
+			// declare an arc generator function
+			var arc = d3.svg.arc().outerRadius(r).innerRadius(50);
+			// select paths, use arc generator to draw
+			var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+			console.log(arcs);
+			arcs.append("svg:path")
+			    .attr("fill", function(d, i){
+			        return color(i);
+			    })
+			    .attr("d", function (d) {
+			        // log the result of the arc generator to show how cool it is :)
+			        console.log(arc(d));
+			        return arc(d);
+			    });
+
+
+
+			// add the text
+			arcs.append("svg:text").attr("transform", function(d){
+						d.innerRadius = 5;
+						d.outerRadius = r;
+			    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
+			    return data[i].label;}
+					);
+
+
+
+			
+		});
+	</script>
+	
+</body>
+</html>
