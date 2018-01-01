@@ -11,7 +11,11 @@ hw3 https://ntu-csx-d3js.github.io/r05630002/piechart.html
 google map https://ntu-csx-d3js.github.io/r05630002/1128index.html
 
 final (practice) 
+用電量 
 https://ntu-csx-d3js.github.io/r05630002/try.html
-https://ntu-csx-d3js.github.io/r05630002/1231.html
-https://ntu-csx-d3js.github.io/r05630002/scooter.html
 https://ntu-csx-d3js.github.io/r05630002/taiwanpower.html
+電車
+https://ntu-csx-d3js.github.io/r05630002/1231.html
+油車
+https://ntu-csx-d3js.github.io/r05630002/scooter.html
+
