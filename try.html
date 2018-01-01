@@ -1,0 +1,228 @@
+
+<meta charset="utf-8">
+<style>
+body{
+  font-family: "Helvetica Neue";
+  position: relative;
+}
+svg{
+  position: absolute;
+  margin:auto;
+  text-align:center;
+  width: 100%;
+  height: 100%;
+}
+.follow-me{
+  position:absolute;
+  font-size:1.25em;
+  font-weight:100;
+  bottom:20px;
+  right:50px;
+  text-decoration: none;
+  color: gray;
+}
+
+</style>
+
+<body>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<script>
+var dataset = [ 
+{ department:"Kaohsiung", population:29965919976}, 
+{department:"Taoyuan", population:28440496287}, 
+{department:"Taichung", population:27349318781},
+{department:"Tainan", population:26472702431}, 
+{department:"new_taipei", population:20822425913},
+{department:"Taipei", population:16531449703},
+{department:"Changhua", population:10508323661},
+{department:"Hsinchu_city", population:10285624687},
+{department:"Hsinchu", population:9311191475},
+{department:"Miaoli", population:7141648317},
+{department:"Yunlin", population:5505651796},
+{department:"Pingtung", population:4500899609},
+{department:"Yilan", population:3349556688},
+{department:"Nantou", population:2761404205},
+{department:"Chiayi", population:2707505186},
+{department:"Hualien", population:2482256975},
+{department:"Keelung", population:1484713104},
+{department:"Chiayi_city", population:1201509853},
+{department:"Taitung", population:941495231},
+{department:"Penghu", population:407407969},
+{department:"Jinma", population:359768039},
+];
+
+// *** Make svg canvas and its parameters
+var svg = d3.select("body").append("svg").append("g")
+var color = d3.scale.category20b();
+
+var width = 1000
+var height = 600
+var padding = { top:180, right:150, bottom:100, left:50};
+
+var canvas_w = width - padding.left - padding.right;
+var canvas_h = height - padding.top - padding.bottom;
+var radius = Math.min(canvas_w, canvas_h) / 1.2;
+
+
+// *** pie data transformer
+var pie = d3.layout.pie()
+  .sort(null)
+  .value(function(d){ 
+    return d.population;
+  });
+
+var piedata = pie(dataset);
+console.log(piedata);
+
+// *** arc generator
+var gen_arc = d3.svg.arc()
+  .innerRadius(radius * 0.20)
+  .outerRadius(radius * 0.8);
+
+var arcs = svg.selectAll("g")
+  .data(piedata)
+  .enter()
+  .append("g")
+  .attr("transform", "translate(" + width/2 + "," + height/1.8 + ")" );
+
+
+// *** Add elements to arcs
+arcs.append("path")
+  .attr("fill", function(d,i){
+    return color(i);
+  })
+  .attr("opacity", 0.8)
+  .attr("d", function(d){
+    return gen_arc(d);
+  }) 
+  .on("mouseout", function(d,i){
+      center_population.text("0");
+      center_ratio.text("0%");
+      
+      d3.select(departments[0][i]).transition()
+	.duration(250)
+	.attr("font-size", "17px")
+	.attr("fill", "lightgray");
+      
+      d3.select(link_line[0][i]).transition()
+	.duration(250)
+	.attr("opacity", 0.2)
+	.attr("stroke", "black");
+
+      d3.select(this).transition()
+	.duration(250)
+	.attr("opacity", 0.7)
+	.attr("d", gen_arc.outerRadius(radius * 0.7))
+	.attr("fill", color(i));
+  })
+  .on("mouseover", function(d,i){
+      center_population.text(d.value);
+      var percent = Number(d.value) / d3.sum(dataset, function(d){return d.population;}) * 100;
+      center_ratio.text(percent.toFixed(1) + "%");
+      
+      //      index i = 0  1  2  3  4  5 ...
+      // color_change = 0  0  2  2  4  4 ...
+      var color_change = i - (i % 2);
+      
+      d3.select(departments[0][i]).transition()
+	.duration(250)
+	.attr("font-size", "24px")
+	.attr("fill", color(color_change));
+      
+      d3.select(link_line[0][i]).transition()
+	.duration(250)
+	.attr("opacity", 0.2)
+	.attr("stroke", "black");
+
+      d3.select(this).transition()
+	.duration(250)
+	.attr("opacity", 1.0)
+	.attr("d", gen_arc.outerRadius(radius * 0.72))
+	.attr("fill", color(color_change));
+  });
+
+
+// *** Centered text and data
+var h_line1 = height/2 + 25;
+var h_line2 = height/2 + 55;
+var w_left = width/2 + 1.5;
+var w_right = width/2 + 2;
+
+var center_text1 = svg.append("text")
+  .attr("font-size", "14px")
+  .attr("fill", "gray")
+  .attr("text-anchor", "end")
+  .attr("transform", "translate(" + w_left + "," + h_line1 + ")")
+  .text("用電量:");
+
+var center_text2 = svg.append("text")
+  .attr("font-size", "16px")
+  .attr("fill", "gray")
+  .attr("text-anchor", "end")
+  .attr("transform", "translate(" + w_left + "," + h_line2 + ")")
+  .text("比例:");
+
+var center_population = svg.append("text")
+  .attr("font-size", "10px")
+  .attr("fill", "gray")
+  .attr("text-anchor", "start")
+  .attr("transform", "translate(" + w_right + "," + h_line1 + ")")
+  .text("0");
+
+var center_ratio = svg.append("text")
+  .attr("font-size", "20px")
+  .attr("fill", "gray")
+  .attr("text-anchor", "start")
+  .attr("transform", "translate(" + w_right + "," + h_line2 + ")")
+  .text("0%");
+
+
+// *** Peripheral text of departments
+// 	index i =  0  1  2  3  4  5 ...
+//    alternate = -1  1 -1  1 -1  1 ...
+//    To keep text in the same angle, y/x must remains the same.
+
+var departments = arcs.append("text")
+  .attr("transform", function(d,i){
+    var x = gen_arc.centroid(d)[0] * 2;
+    var y = gen_arc.centroid(d)[1] * 2;
+    var alternate = ((2*i) % 4) - 1;
+    var trX = x * (1 + alternate*0.09);
+    var trY = y * (1 + alternate*0.09);
+    return "translate(" + trX + "," + trY + ")";
+  })
+  .attr("fill", "lightgray")
+  .attr("text-anchor", "middle")
+  .attr("font-size", "16px")
+  .text(function(d){
+    return d.data.department;
+  });
+ 
+var link_line = arcs.append("line")
+  .attr("stroke", "gray")
+  .attr("opacity", 0.3)
+  .attr("stroke-width", "1px")
+  .attr("x1", function(d){ return gen_arc.centroid(d)[0] * 1.4; })
+  .attr("y1", function(d){ return gen_arc.centroid(d)[1] * 1.4; })
+  .attr("x2", function(d,i){ 
+    var alternate = ((2*i) % 4) - 1;
+    return gen_arc.centroid(d)[0] * 1.85 * (1 + alternate*0.1); 
+  })
+  .attr("y2", function(d,i){ 
+    var alternate = ((2*i) % 4) - 1;
+    return gen_arc.centroid(d)[1] * 1.85 * (1 + alternate*0.1); 
+  });
+
+
+// *** Title of the chart	
+svg.append("text").attr("x", (width / 2)).attr("y", 50)
+    .attr("text-anchor", "middle").style("font-size", "3em")
+    .attr("fill", "black")
+    .style("font-weight", 120)
+    .text("105台灣各縣市用電量比");
+
+</script>
+<a class="follow-me" href="http://github.com/NTU-CSX-D3JS/r05630">期末報告 | 淺談資料視覺化與D3.js</a>
+</body>
+</html>
