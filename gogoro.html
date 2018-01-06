@@ -1,0 +1,131 @@
+<html >
+<head>
+	<script src="https://d3js.org/d3.v3.js"></script>
+	<style>
+		html, body {
+			height: 100%;
+			width: 100%;
+		}
+		* {
+				font-family: 微軟正黑體, candara;
+				font-size: 14px;
+				font-weight: 800;
+			}
+			
+		#pie {
+			height: 100%;
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		body{
+			background-color: #f5f5f5 ;
+		}
+	</style>
+	<svg height="150" width="400">   
+		<defs>
+			<filter id="f1" x="0" y="0">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="70" />
+			</filter>
+		</defs>
+		<rect width="500" height="75" stroke="orange" stroke-width="10" fill="white" filter="gogoro(#f1)" />
+		<text x="50" y="50" fill="brown">台灣各縣市電動機車（重型＋輕型）比例</text>
+	</svg> 
+</head>
+<body>
+	
+	<div id="pie"></div>
+
+	<script>
+		function my_color(n) {
+			var color_table = [	"#FE2E2E", "#F78181","#F6D8CE","#2E64FE","#81BEF7", "#CEECF5",
+				"#DBA901","#FACC2E", "#F5DA81", 
+				"#31B404", "#74DF00", "#D0F5A9",
+				"#F5A9F2","#F6CEEC","#F8E0EC", 
+				"#7401DF", "#AC58FA", "#D8CEF6","#FFFF00","#848484","#F3F781"];
+			return color_table[n % 21];}
+	
+		function draw_pie(cvs_file) {
+			d3.csv(cvs_file, function(data){
+				console.log(data);
+				
+				// Pie setup
+				var m = {top:20, right:20, bottom: 20, left: 20};
+				var w = 950 - m.left - m.right;
+				var h = 550	- m.top - m.bottom;
+				var r = h/2;
+				var vis = d3.select('#pie')
+							.append("svg:svg")
+							.data([data])
+							.attr("width", w + m.left + m.right)
+							.attr("height", h + m.top + m.bottom)
+							.append("svg:g")
+							.attr("transform", "translate(" + (r + m.left) + "," + (r + m.right) + ")");
+				console.log(vis);
+				var pie = d3.layout
+							.pie()
+							.sort(null)
+							.value(function(d){
+								return parseInt(d.gogoro);});
+								
+				// Arc generator
+				var arc = d3.svg
+							.arc()
+							.outerRadius(r)
+							.innerRadius(50);
+				var arcs = vis.selectAll("g.slice")
+								.data(pie)
+								.enter()
+								.append("svg:g")
+								.attr("class", "slice");
+				console.log(arcs);
+				
+				// Draw sectors with colors
+				arcs.append("svg:path")
+					.attr("fill", function(d, i){ 
+						return my_color(i);})
+					.attr("d", function (d){
+						console.log(arc(d));
+						return arc(d);});
+
+				// Print sector id
+				arcs.append("svg:text")
+					.attr("transform", function(d) {
+						var c = arc.centroid(d);
+						return "translate(" + c[0]*1.8 +"," + c[1]*1.8 + ")";})
+					.attr("text-anchor", "middle").text( function(d, i) {
+						return i;})
+					.attr("font-size","10px");
+						
+				// Draw bullet
+				arcs.append("svg:g")
+					.attr("transform", "translate(300,0)")
+					.append("rect")
+					.attr("x", "0")
+					.attr("y", function(d,i){ 
+						return (-200 + i*20); })
+					.attr("width","10")
+					.attr("height","10")
+					.attr("fill", function(d, i){ 
+						return my_color(i);})
+						
+				// Print info after bullet
+				arcs.append("text")
+					.attr("transform","translate(315,10)")
+					.attr("x", "0")
+					.attr("y", function(d,i){ return (-200 + i*20); })
+					.text(function(d, i) {
+						var cityName = String(data[i].label);
+						var gogoroNum = String(data[i].gogoro);
+						var result = cityName + " : " + gogoroNum;
+						return result;});
+				});
+		}
+		
+		var csv_file;
+		csv_file = "https://ntu-csx-d3js.github.io/r05630002/taiwangogoro.csv";
+		draw_pie(csv_file); // key = city, value = gogoro number
+	</script>
+</body>
+</html>
