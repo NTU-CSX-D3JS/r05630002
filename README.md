@@ -15,7 +15,7 @@ final (practice)
 https://ntu-csx-d3js.github.io/r05630002/try.html
 https://ntu-csx-d3js.github.io/r05630002/taiwanpower.html
 電車
-https://ntu-csx-d3js.github.io/r05630002/1231.html
+https://ntu-csx-d3js.github.io/r05630002/gogoro.html
 油車
 https://ntu-csx-d3js.github.io/r05630002/scooter.html
 
