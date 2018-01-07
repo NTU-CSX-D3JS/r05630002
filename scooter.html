@@ -40,51 +40,99 @@
  </svg> 
 </head>
 <body>
-	
 	<div id="pie"></div>
 
-	<script type="text/javascript">
-		var url = "https://ntu-csx-d3js.github.io/r05630002/taiwanscooter.csv";
+	<script>
+		function my_color(n) {
+			var color_table = [	"#FE2E2E", "#F78181","#F6D8CE",
+				"#2E64FE","#81BEF7", "#CEECF5",
+				"#FE9A2E","#FACC2E", "#F5DA81", 
+				"#31B404", "#74DF00", "#D0F5A9",
+				"#F5A9F2","#F6CEEC","#F8E0EC", 
+			"#7401DF", "#AC58FA", "#D8CEF6",
+				"#61380B","#6E6E6E","#FFFF00"];
+			return color_table[n % 21];}
+	
+		function draw_pie(cvs_file) {
+			d3.csv(cvs_file, function(data){
+				console.log(data);
+				
+				// Pie setup
+				var m = {top:20, right:20, bottom: 20, left: 20};
+				var w = 950 - m.left - m.right;
+				var h = 550	- m.top - m.bottom;
+				var r = h/2;
+				var vis = d3.select('#pie')
+							.append("svg:svg")
+							.data([data])
+							.attr("width", w + m.left + m.right)
+							.attr("height", h + m.top + m.bottom)
+							.append("svg:g")
+							.attr("transform", "translate(" + (r + m.left) + "," + (r + m.right) + ")");
+				console.log(vis);
+				var pie = d3.layout
+							.pie()
+							.sort(null)
+							.value(function(d){
+								return parseInt(d.gasoline);});
+								
+				// Arc generator
+				var arc = d3.svg
+							.arc()
+							.outerRadius(r)
+							.innerRadius(50);
+				var arcs = vis.selectAll("g.slice")
+								.data(pie)
+								.enter()
+								.append("svg:g")
+								.attr("class", "slice");
+				console.log(arcs);
+				
+				// Draw sectors with colors
+				arcs.append("svg:path")
+					.attr("fill", function(d, i){ 
+						return my_color(i);})
+					.attr("d", function (d){
+						console.log(arc(d));
+						return arc(d);});
+
+				// Print sector id
+				arcs.append("svg:text")
+					.attr("transform", function(d) {
+						var c = arc.centroid(d);
+						return "translate(" + c[0]*1.8 +"," + c[1]*1.8 + ")";})
+					.attr("text-anchor", "middle").text( function(d, i) {
+						return i;})
+					.attr("font-size","10px");
+						
+				// Draw bullet
+				arcs.append("svg:g")
+					.attr("transform", "translate(300,0)")
+					.append("rect")
+					.attr("x", "0")
+					.attr("y", function(d,i){ 
+						return (-200 + i*20); })
+					.attr("width","10")
+					.attr("height","10")
+					.attr("fill", function(d, i){ 
+						return my_color(i);})
+						
+				// Print info after bullet
+				arcs.append("text")
+					.attr("transform","translate(315,10)")
+					.attr("x", "0")
+					.attr("y", function(d,i){ return (-200 + i*20); })
+					.text(function(d, i) {
+						var cityName = String(data[i].label);
+						var gasolineNum = String(data[i].gasoline);
+						var result = cityName + " : " + gasolineNum;
+						return result;});
+				});
+		}
 		
-		d3.csv(url, function(data){
-			console.log(data);
-			var w = 800;
-			var h = 800;
-			var r = h/3;
-			var m = 300; //定義邊界
-			var color = d3.scale.category20b();
-			var vis = d3.select('#pie').append("svg:svg").data([data]).attr("width", w).attr("height", h-150).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
-			console.log(vis);
-			var pie = d3.layout.pie().sort(null).value(function(d){return parseInt(d.gasoline);});
-			// declare an arc generator function
-			var arc = d3.svg.arc().outerRadius(r).innerRadius(80);
-			// select paths, use arc generator to draw
-			var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
-			console.log(arcs);
-			arcs.append("svg:path")
-			    .attr("fill", function(d, i){
-			        return color(i);
-			    })
-			    .attr("d", function (d) {
-			        // log the result of the arc generator to show how cool it is :)
-			        console.log(arc(d));
-			        return arc(d);
-			    });
-
-
-
-			// add the text
-			arcs.append("svg:text").attr("transform", function(d){
-						d.innerRadius = 85;
-						d.outerRadius = r;
-			    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
-			    return data[i].label;}
-					);
-
-
-
-			
-		});
+		var csv_file;
+		csv_file = "https://ntu-csx-d3js.github.io/r05630002/taiwanscooter.csv";
+		draw_pie(csv_file); // key = city, value = gasoline number
 	</script>
 	
 </body>
