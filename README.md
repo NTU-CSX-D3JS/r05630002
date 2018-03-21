@@ -21,3 +21,13 @@ https://ntu-csx-d3js.github.io/r05630002/scooter.html
 
 final 
 https://ntu-csx-d3js.github.io/d00541007/HW2_scenario
+
+# 2018_Spring CSX
+About me
+>-I'm 許凱嵐.
+<br>-I am a sophomore for the master degree in the department of Bio-Industry Communication and Development.(名字好長＝＝)
+<br>-Want to learn R to help analyze the data from social media like facebook, twitter, instagram
+<br>-Looking forward to have a good time(?) and finish this class well like last semester!!(I hope 
+
+#Week1.2.3
+
