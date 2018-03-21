@@ -30,3 +30,5 @@ About me
   I am a sophomore for the master degree in the department of Bio-Industry Communication and Development.(tired of typing the   this long department's nameＸＤＤ)
   Want to learn R to help analyze the data from social media like facebook, twitter, instagram...
   Looking forward to have a good time(?) and finish this class well like last semester!!(I hope~ 
+________________________________________________________________
+Week1
