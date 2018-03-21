@@ -27,7 +27,7 @@ About me
 >-I'm 許凱嵐.
 <br>-A sophomore for the master degree in the department of Bio-Industry Communication and Development.(名字好長＝＝)
 <br>-learn R to help me to analyze the data from social media like facebook, twitter, instagram... more efficently
-<br>-Looking forward to have the R skill and finish this class well~(like last semester!! I hope 
+<br>-Looking forward to have the R skill and finish this class well~(like the last semester!! I hope 
 
 #Week1.2.3
 
